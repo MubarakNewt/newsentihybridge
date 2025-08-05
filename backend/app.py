@@ -8,7 +8,7 @@ import re
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173", "https://senti-hybrid.vercel.app"])
+CORS(app, origins=["http://localhost:5173", "https://newsentihybridge-md7s.vercel.app"])
 
 # === Load artifacts ===
 cnn_model = tf.keras.models.load_model("model/cnn_model.keras")
