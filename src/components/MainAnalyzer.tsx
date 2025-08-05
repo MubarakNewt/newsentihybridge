@@ -13,20 +13,28 @@ const MainAnalyzer: React.FC<MainAnalyzerProps> = ({ onAnalysisComplete }) => {
   const handleAnalyze = async () => {
     if (!text.trim() || isAnalyzing) return;
 
+    console.log('🎬 Starting analysis process...');
     setIsAnalyzing(true);
     
     try {
+      console.log('📝 Text to analyze:', text);
       const analysis = await fetchSentimentAnalysis(text);
-      onAnalysisComplete({
+      console.log('✅ Analysis completed:', analysis);
+      
+      const finalResult = {
         ...analysis,
         originalText: text,
         timestamp: new Date().toISOString()
-      });
+      };
+      
+      console.log('🎯 Final result to display:', finalResult);
+      onAnalysisComplete(finalResult);
     } catch (error) {
-      console.error('Analysis failed:', error);
+      console.error('❌ Analysis failed:', error);
       alert('Failed to analyze sentiment. Please try again.');
     } finally {
       setIsAnalyzing(false);
+      console.log('🏁 Analysis process finished');
     }
   };
 

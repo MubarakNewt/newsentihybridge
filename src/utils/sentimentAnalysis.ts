@@ -168,8 +168,12 @@ export const analyzeSentiment = (text: string): AnalysisResult => {
 
 // Real API call to backend
 export async function fetchSentimentAnalysis(text: string) {
+  console.log('🚀 Starting sentiment analysis for:', text);
+  
   try {
-    const response = await fetch('http://127.0.0.1:5000/predict', {
+    console.log('📡 Making API call to: https://cnn-senti.fly.dev/predict');
+    
+    const response = await fetch('https://cnn-senti.fly.dev/predict', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -177,14 +181,18 @@ export async function fetchSentimentAnalysis(text: string) {
       body: JSON.stringify({ text }),
     });
 
+    console.log('📊 Response status:', response.status);
+    console.log('📊 Response ok:', response.ok);
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();
+    console.log('🎯 Raw API response:', data);
     
     // Transform backend response to match frontend interface
-    return {
+    const transformedData = {
       randomForest: data.rf ? {
         sentiment: data.rf.label as 'positive' | 'negative' | 'neutral',
         confidence: data.rf.confidence
@@ -205,8 +213,13 @@ export async function fetchSentimentAnalysis(text: string) {
       } : null,
       timestamp: new Date().toISOString()
     };
+    
+    console.log('✨ Transformed data:', transformedData);
+    return transformedData;
+    
   } catch (error) {
-    console.error('Error calling backend API:', error);
+    console.error('❌ Error calling backend API:', error);
+    console.log('🔄 Falling back to simulated analysis...');
     // Fallback to simulated analysis if API fails
     return analyzeSentiment(text);
   }

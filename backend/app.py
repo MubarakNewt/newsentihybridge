@@ -8,15 +8,15 @@ import re
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173", "https://newsentihybridge-md7s.vercel.app"])
+CORS(app, origins=["http://localhost:5173", "https://newsentihybridge-md7s.vercel.app", "https://cnn-senti.fly.dev"])
 
 # === Load artifacts ===
-cnn_model = tf.keras.models.load_model("model/cnn_model.keras")
-tokenizer = joblib.load("preprocess/tokenizer.pkl")
+cnn_model = tf.keras.models.load_model("backend/model/cnn_model.keras")
+tokenizer = joblib.load("backend/preprocess/tokenizer.pkl")
 
 # Optional: Load RF model and TF-IDF
-rf_path = "model/rf_model.pkl"
-tfidf_path = "preprocess/tfidf_vectorizer.pkl"
+rf_path = "backend/model/rf_model.pkl"
+tfidf_path = "backend/preprocess/tfidf_vectorizer.pkl"
 rf_available = os.path.exists(rf_path)
 tfidf_available = os.path.exists(tfidf_path)
 
